@@ -25,7 +25,6 @@ const App: React.FC = () => {
   const [selectedDateButton, setSelectedDateButton] = useState<number>(0);
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   // Set city weather data if a city is selected
   useEffect(() => {
