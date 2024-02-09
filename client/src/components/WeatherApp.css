@@ -25,6 +25,12 @@ button:hover {
   background-color: rgb(42, 113, 45);
 }
 
+input {
+  background-color: #95d298;
+  font-size: large;
+  margin-bottom: 10px;
+}
+
 option {
   background-color: rgb(42, 113, 45);
 }
