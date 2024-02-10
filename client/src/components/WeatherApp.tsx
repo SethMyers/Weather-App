@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./WeatherApp.css";
 
@@ -26,7 +27,14 @@ const WeatherApp: React.FC = () => {
 
   const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
+
   const token = localStorage.getItem("token");
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/"); // Redirect to the login page
+  };
 
   // Set city weather data if a city is selected
   useEffect(() => {
@@ -181,6 +189,11 @@ const WeatherApp: React.FC = () => {
           )}
         </>
       )}
+      <div>
+        <button className="logout-button" onClick={handleLogout}>
+          Logout
+        </button>
+      </div>
     </div>
   );
 };

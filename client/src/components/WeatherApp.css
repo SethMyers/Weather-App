@@ -76,3 +76,9 @@ select {
 .forecast-table td {
   padding: 10px;
 }
+
+.logout-button {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+}
