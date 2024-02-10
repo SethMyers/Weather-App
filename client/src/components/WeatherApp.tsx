@@ -26,12 +26,18 @@ const WeatherApp: React.FC = () => {
 
   const [loading, setLoading] = useState(false);
 
+  const token = localStorage.getItem("token");
+
   // Set city weather data if a city is selected
   useEffect(() => {
     if (selectedCity) {
       // Fetch weather data
       axios
-        .get(`/weather/${selectedCity.id}`)
+        .get(`/weather/${selectedCity.id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((response) => {
           setWeatherData(response.data);
           setLoading(false);
@@ -45,7 +51,11 @@ const WeatherApp: React.FC = () => {
         // Fetch detailed forecast data
         setLoading(true);
         axios
-          .get(`/forecast/${selectedCity.id}`)
+          .get(`/forecast/${selectedCity.id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
           .then((response) => {
             setForecastData(response.data.list);
             setLoading(false);

@@ -1,29 +1,29 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-      {
-        "name": "Launch Client",
-        "type": "node",
-        "request": "launch",
-        "cwd": "${workspaceFolder}/client",
-        "runtimeExecutable": "npm",
-        "runtimeArgs": ["run-script", "start"],
-        "console": "integratedTerminal"
-      },
-      {
-        "type": "node",
-        "request": "launch",
-        "name": "Launch Backend",
-        "runtimeArgs": ["-r", "ts-node/register"],
-        "args": ["${workspaceFolder}/backend/src/server.ts"],
-        "console": "integratedTerminal",
-        "internalConsoleOptions": "neverOpen"
-      }
-    ],
-    "compounds": [
-        {
-          "name": "Launch Weather App",
-          "configurations": ["Launch Client", "Launch Backend"]
-        }
-    ]
-  }
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Client",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/client",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "start"],
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Backend",
+      "runtimeArgs": ["-r", "ts-node/register"],
+      "args": ["${workspaceFolder}/backend/src/server.ts"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Launch Weather App",
+      "configurations": ["Launch Client", "Launch Backend"]
+    }
+  ]
+}
