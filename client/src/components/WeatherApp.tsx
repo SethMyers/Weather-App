@@ -26,6 +26,7 @@ const WeatherApp: React.FC = () => {
   const [selectedDateButton, setSelectedDateButton] = useState<number>(0);
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
@@ -38,6 +39,7 @@ const WeatherApp: React.FC = () => {
 
   // Set city weather data if a city is selected
   useEffect(() => {
+    setError(null);
     if (selectedCity) {
       // Fetch weather data
       axios
@@ -51,7 +53,9 @@ const WeatherApp: React.FC = () => {
           setLoading(false);
         })
         .catch((error) => {
-          console.error("Error fetching weather data");
+          const errorMessage = "Error fetching weather data";
+          console.error(errorMessage);
+          setError(errorMessage);
           setLoading(false);
         });
 
@@ -69,7 +73,9 @@ const WeatherApp: React.FC = () => {
             setLoading(false);
           })
           .catch((error) => {
-            console.error("Error fetching forecast data");
+            const errorMessage = "Error fetching forecast data";
+            console.error(errorMessage);
+            setError(errorMessage);
             setLoading(false);
           });
       }
@@ -140,7 +146,8 @@ const WeatherApp: React.FC = () => {
           <p>Wind {Math.round(weatherData.wind.speed)} m/s</p>
         </div>
       )}
-      {!loading && selectedCity && (
+      {error && <div className="error">{error}</div>}
+      {!loading && !error && selectedCity && (
         <>
           {/* Render the "See Forecast" button */}
           <button onClick={handleForecastClick}>

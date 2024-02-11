@@ -61,6 +61,12 @@ select {
   background-color: rgb(35, 94, 38);
 }
 
+.error {
+  color: rgb(27, 71, 29);
+  margin-top: 50px;
+  font-size: 1rem;
+}
+
 .forecast-table {
   border-spacing: 10px;
   width: 100%;
