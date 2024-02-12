@@ -1,7 +1,10 @@
-import axios from "axios";
+import { authenticateToken } from "./auth";
 import cors from "cors";
-import express, { Request, Response, NextFunction } from "express";
+import express, { Request, Response } from "express";
 import jwt from "jsonwebtoken";
+
+import { SECRET_KEY, USERS } from "./config";
+import { getWeatherData } from "./weather";
 
 require("dotenv").config({ path: "./backend/.env" });
 const app = express();
@@ -9,24 +12,6 @@ const port = 3001;
 
 app.use(cors());
 app.use(express.json());
-
-const SECRET_KEY: string = process.env.JWT_API_TOKEN as string;
-const USERS = [{ id: 1, username: "SethMyers", password: "test-password" }];
-
-const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
-
-  if (!token) return res.status(401).send("Missing authorization token.");
-
-  if (!SECRET_KEY) return res.status(401).send("Missing secret key.");
-
-  jwt.verify(token, SECRET_KEY, (err) => {
-    if (err)
-      return res.status(403).send("You are not authorized to see the weather!");
-    next();
-  });
-};
 
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
@@ -45,34 +30,12 @@ app.post("/login", (req, res) => {
   }
 });
 
-const getWeatherData = async (
-  endpoint: string,
-  req: Request,
-  res: Response
-) => {
-  try {
-    const apiKey = process.env.WEATHER_API_KEY;
-    const response = await axios.get(
-      `http://api.openweathermap.org/data/2.5/${endpoint}?id=${req.params.cityId}&appid=${apiKey}`
-    );
-    res.json(response.data);
-  } catch (error) {
-    res.status(500).send("An error occurred");
-  }
-};
-
 app.get("/weather/:cityId", authenticateToken, (req: Request, res: Response) =>
   getWeatherData("weather", req, res)
 );
 app.get("/forecast/:cityId", authenticateToken, (req: Request, res: Response) =>
   getWeatherData("forecast", req, res)
 );
-
-app.use((err: Error, req: Request, res: Response) => {
-  if (err.name === "UnauthorizedError") {
-    res.status(401).send("You are not authorized to see the weather!");
-  }
-});
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
