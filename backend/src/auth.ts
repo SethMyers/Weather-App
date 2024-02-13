@@ -16,8 +16,7 @@ export const authenticateToken = (
   if (!SECRET_KEY) return res.status(401).send("Missing secret key.");
 
   jwt.verify(token, SECRET_KEY, (err) => {
-    if (err)
-      return res.status(403).send("You are not authorized to see the weather!");
+    if (err) return res.status(403).send("Your token is incorrect.");
     next();
   });
 };

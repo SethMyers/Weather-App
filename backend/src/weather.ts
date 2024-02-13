@@ -1,5 +1,7 @@
 import axios from "axios";
 import { Request, Response } from "express";
+import { WeatherData } from "./models/WeatherData";
+import { ForecastData } from "./models/ForecastData";
 
 export const getWeatherData = async (
   endpoint: string,
@@ -11,7 +13,22 @@ export const getWeatherData = async (
     const response = await axios.get(
       `http://api.openweathermap.org/data/2.5/${endpoint}?id=${req.params.cityId}&appid=${apiKey}`
     );
-    res.json(response.data);
+
+    if (endpoint === "weather") {
+      const weatherData = new WeatherData(
+        response.data.weather[0],
+        response.data.main,
+        response.data.wind
+      );
+      res.json(weatherData);
+    } else if (endpoint === "forecast") {
+      const forecastDataList = response.data.list.map(
+        (item: any) => new ForecastData(item)
+      );
+      res.json(forecastDataList);
+    } else {
+      throw new Error(`Unsupported endpoint: ${endpoint}`);
+    }
   } catch (error) {
     res.status(500).send("An error occurred");
   }

@@ -8,36 +8,26 @@ interface User {
   password: string;
 }
 
-const USERS: User[] = [
-  { id: 1, username: "SethMyers", password: "test-password" },
-];
-
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const [error, setError] = useState<string | null>(null);
+
   const navigate = useNavigate();
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    const isAuthenticated = USERS.some(
-      (u) => u.username === username && u.password === password
-    );
-
-    if (isAuthenticated) {
-      try {
-        const response = await axios.post(`http://localhost:3001/login`, {
-          username,
-          password,
-        });
-        const token = response.data.token;
-        localStorage.setItem("token", token);
-        navigate("/weather-app");
-      } catch (error) {
-        alert("Invalid credentials");
-      }
-    } else {
-      alert("Invalid credentials");
+    try {
+      const response = await axios.post(`/login`, {
+        username,
+        password,
+      });
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+      navigate("/weather-app");
+    } catch (error) {
+      setError("Invalid credentials. Please try again.");
     }
   };
 
@@ -61,6 +51,7 @@ const LoginPage: React.FC = () => {
         />
       </div>
       <button onClick={handleLogin}>Log in</button>
+      {error && <div className="error">{error}</div>}
     </div>
   );
 };

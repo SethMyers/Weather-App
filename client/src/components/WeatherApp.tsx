@@ -69,7 +69,7 @@ const WeatherApp: React.FC = () => {
             },
           })
           .then((response) => {
-            setForecastData(response.data.list);
+            setForecastData(response.data);
             setLoading(false);
           })
           .catch((error) => {
@@ -86,7 +86,7 @@ const WeatherApp: React.FC = () => {
   useEffect(() => {
     if (forecastData.length > 0) {
       const dates = [
-        ...new Set(forecastData.map((item) => item.dt_txt.split(" ")[0])),
+        ...new Set(forecastData.map((item) => item.date.split(" ")[0])),
       ];
 
       setUniqueDates(dates);
@@ -116,11 +116,8 @@ const WeatherApp: React.FC = () => {
 
   // Forecast data for current date
   const filteredForecastData = forecastData.filter(
-    (item) => item.dt_txt.split(" ")[0] === selectedDate
+    (item) => item.date.split(" ")[0] === selectedDate
   );
-
-  const kelvinToCelsius = (kelvin: number): number =>
-    Math.round(kelvin - 273.15);
 
   return (
     <div>
@@ -140,10 +137,10 @@ const WeatherApp: React.FC = () => {
       </select>
       {weatherData && (
         <div>
-          <h2>{weatherData.weather[0].main}</h2>
-          <p>{weatherData.weather[0].description}</p>
-          <h2>{kelvinToCelsius(weatherData.main.temp)}°C</h2>
-          <p>Wind {Math.round(weatherData.wind.speed)} m/s</p>
+          <h2>{weatherData.main}</h2>
+          <p>{weatherData.description}</p>
+          <h2>{weatherData.temp}°C</h2>
+          <p>Wind {weatherData.wind} m/s</p>
         </div>
       )}
       {error && <div className="error">{error}</div>}
@@ -170,12 +167,12 @@ const WeatherApp: React.FC = () => {
                 <tbody>
                   {filteredForecastData.map((forecast, index) => (
                     <tr key={index}>
-                      <td>{forecast.dt_txt}</td>
-                      <td>{kelvinToCelsius(forecast.main.temp)}°C</td>
-                      <td>{kelvinToCelsius(forecast.main.temp_min)}°C</td>
-                      <td>{kelvinToCelsius(forecast.main.temp_max)}°C</td>
-                      <td>{Math.round(forecast.wind.speed)} m/s</td>
-                      <td>{forecast.weather[0].description}</td>
+                      <td>{forecast.date}</td>
+                      <td>{forecast.temp}°C</td>
+                      <td>{forecast.minTemp}°C</td>
+                      <td>{forecast.maxTemp}°C</td>
+                      <td>{forecast.wind} m/s</td>
+                      <td>{forecast.description}</td>
                     </tr>
                   ))}
                 </tbody>
