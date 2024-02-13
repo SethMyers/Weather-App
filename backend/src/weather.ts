@@ -30,6 +30,16 @@ export const getWeatherData = async (
       throw new Error(`Unsupported endpoint: ${endpoint}`);
     }
   } catch (error) {
-    res.status(500).send("An error occurred");
+    if (axios.isAxiosError(error) && error.response) {
+      res.status(error.response.status).send({
+        code: error.response.data.cod,
+        message: error.response.data.message,
+      });
+    } else {
+      res.status(500).send({
+        code: "500",
+        message: "An unexpected error occurred",
+      });
+    }
   }
 };

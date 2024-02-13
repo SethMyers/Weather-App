@@ -53,9 +53,8 @@ const WeatherApp: React.FC = () => {
           setLoading(false);
         })
         .catch((error) => {
-          const errorMessage = "Error fetching weather data";
-          console.error(errorMessage);
-          setError(errorMessage);
+          console.error(error);
+          setError("Error fetching weather data");
           setLoading(false);
         });
 
@@ -73,9 +72,8 @@ const WeatherApp: React.FC = () => {
             setLoading(false);
           })
           .catch((error) => {
-            const errorMessage = "Error fetching forecast data";
-            console.error(errorMessage);
-            setError(errorMessage);
+            console.error(error);
+            setError("Error fetching forecast data");
             setLoading(false);
           });
       }

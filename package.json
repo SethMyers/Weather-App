@@ -1,4 +1,10 @@
 {
+  "private": true,
+  "workspaces": [
+    "backend",
+    "client",
+    "shared"
+  ],
   "devDependencies": {
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
