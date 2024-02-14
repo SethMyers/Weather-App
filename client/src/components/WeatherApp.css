@@ -88,3 +88,7 @@ select {
   top: 25px;
   left: 25px;
 }
+
+.page-container {
+  margin-bottom: 20px;
+}

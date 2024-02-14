@@ -40,45 +40,45 @@ const WeatherApp: React.FC = () => {
 
   // Set city weather data if a city is selected
   useEffect(() => {
-    setError(null);
-    if (selectedCity) {
-      // Fetch weather data
-      axios
-        .get(`/weather/${selectedCity.id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          setWeatherData(response.data);
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error(error);
-          setError("Error fetching weather data");
-          setLoading(false);
-        });
+    const fetchData = async () => {
+      setError(null);
+      if (selectedCity) {
+        try {
+          // Fetch weather data
+          setLoading(true);
+          const weatherResponse = await axios.get(
+            `/weather/${selectedCity.id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          setWeatherData(weatherResponse.data);
 
-      if (showForecast) {
-        // Fetch detailed forecast data
-        setLoading(true);
-        axios
-          .get(`/forecast/${selectedCity.id}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-          .then((response) => {
-            setForecastData(response.data);
-            setLoading(false);
-          })
-          .catch((error) => {
-            console.error(error);
-            setError("Error fetching forecast data");
-            setLoading(false);
-          });
+          if (showForecast) {
+            // Fetch detailed forecast data
+            setLoading(true);
+            const forecastResponse = await axios.get(
+              `/forecast/${selectedCity.id}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            setForecastData(forecastResponse.data);
+          }
+        } catch (error) {
+          console.error(error);
+          setError("Error fetching data");
+        } finally {
+          setLoading(false);
+        }
       }
-    }
+    };
+
+    fetchData();
   }, [selectedCity, showForecast]);
 
   // Set dates if forecast data exists
@@ -119,7 +119,7 @@ const WeatherApp: React.FC = () => {
   );
 
   return (
-    <div>
+    <div className="page-container">
       <header>
         <h1>Weather Forecast</h1>
       </header>
