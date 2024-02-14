@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { authService } from "../services/authService";
 import axios from "axios";
 import "./WeatherApp.css";
 
@@ -30,10 +31,10 @@ const WeatherApp: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("token");
+  const token = authService.getToken();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    authService.setToken("");
     navigate("/"); // Redirect to the login page
   };
 

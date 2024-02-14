@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { authService } from "../services/authService";
 import axios from "axios";
 
 interface User {
@@ -23,8 +24,7 @@ const LoginPage: React.FC = () => {
         username,
         password,
       });
-      const token = response.data.token;
-      localStorage.setItem("token", token);
+      authService.setToken(response.data.token);
       navigate("/weather-app");
     } catch (error) {
       setError("Invalid credentials. Please try again.");
