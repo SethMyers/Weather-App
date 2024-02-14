@@ -31,15 +31,9 @@ export const getWeatherData = async (
     }
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      res.status(error.response.status).send({
-        code: error.response.data.cod,
-        message: error.response.data.message,
-      });
+      res.status(error.response.status).send(error.response.data.message);
     } else {
-      res.status(500).send({
-        code: "500",
-        message: "An unexpected error occurred",
-      });
+      res.status(500).send("An unexpected error occurred");
     }
   }
 };
