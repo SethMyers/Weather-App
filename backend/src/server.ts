@@ -138,7 +138,7 @@ app.post("/login", (req, res) => {
  *       401:
  *         description: Unauthorized access
  *       403:
- *         description: Incorrect token
+ *         description: Passed a token, but it is incorrect
  *       500:
  *         description: OpenWeatherMap call failed
  */

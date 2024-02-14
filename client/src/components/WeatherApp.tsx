@@ -85,7 +85,12 @@ const WeatherApp: React.FC = () => {
   useEffect(() => {
     if (forecastData.length > 0) {
       const dates = [
-        ...new Set(forecastData.map((item) => item.date.split(" ")[0])),
+        ...new Set(
+          forecastData.map((item) => {
+            const dateParts = item.date.split(" ");
+            return `${dateParts[0]} ${dateParts[1]}`;
+          })
+        ),
       ];
 
       setUniqueDates(dates);
@@ -114,9 +119,10 @@ const WeatherApp: React.FC = () => {
   };
 
   // Forecast data for current date
-  const filteredForecastData = forecastData.filter(
-    (item) => item.date.split(" ")[0] === selectedDate
-  );
+  const filteredForecastData = forecastData.filter((item) => {
+    const dateParts = item.date.split(" ");
+    return `${dateParts[0]} ${dateParts[1]}` === selectedDate;
+  });
 
   return (
     <div className="page-container">
@@ -138,7 +144,7 @@ const WeatherApp: React.FC = () => {
         <div>
           <h2>{weatherData.main}</h2>
           <p>{weatherData.description}</p>
-          <h2>{weatherData.temp}°C</h2>
+          <h2>{weatherData.temp} °C</h2>
           <p>Wind {weatherData.wind} m/s</p>
         </div>
       )}
@@ -167,9 +173,9 @@ const WeatherApp: React.FC = () => {
                   {filteredForecastData.map((forecast, index) => (
                     <tr key={index}>
                       <td>{forecast.date}</td>
-                      <td>{forecast.temp}°C</td>
-                      <td>{forecast.minTemp}°C</td>
-                      <td>{forecast.maxTemp}°C</td>
+                      <td>{forecast.temp} °C</td>
+                      <td>{forecast.minTemp} °C</td>
+                      <td>{forecast.maxTemp} °C</td>
                       <td>{forecast.wind} m/s</td>
                       <td>{forecast.description}</td>
                     </tr>
