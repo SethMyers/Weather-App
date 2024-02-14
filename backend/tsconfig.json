@@ -17,5 +17,5 @@
     "jsx": "react-jsx",
     "sourceMap": true
   },
-  "include": ["src", "src/server.ts", "authenticateToken.ts"]
+  "include": ["src/**/*"]
 }

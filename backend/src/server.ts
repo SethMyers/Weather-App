@@ -169,7 +169,7 @@ app.get("/weather/:cityId", authenticateToken, (req: Request, res: Response) =>
  *             schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/ForecastData'
+ *                 $ref: '#/components/schemas/ForecastData'
  *       401:
  *         description: Unauthorized access
  *       403:
