@@ -2,11 +2,11 @@ class AuthService {
   private token: string | null = null;
 
   public setToken(token: string): void {
-    this.token = token;
+    window.sessionStorage.setItem("authToken", token);
   }
 
   public getToken(): string | null {
-    return this.token;
+    return window.sessionStorage.getItem("authToken") || null;
   }
 }
 
