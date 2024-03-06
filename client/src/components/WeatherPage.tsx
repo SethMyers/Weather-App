@@ -45,43 +45,44 @@ const WeatherPage: React.FC = () => {
     }
   }, [token]);
 
+  async function weatherDataResponse(selectedCity: City) {
+    try {
+      // Fetch weather data
+      setLoading(true);
+      const weatherResponse = await axios.get(`/weather/${selectedCity.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setWeatherData(weatherResponse.data);
+
+      if (showForecast) {
+        // Fetch detailed forecast data
+        setLoading(true);
+        const forecastResponse = await axios.get(
+          `/forecast/${selectedCity.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setForecastData(forecastResponse.data);
+      }
+    } catch (error) {
+      console.error(error);
+      setError("Error fetching data");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   // Set city weather data if a city is selected
   useEffect(() => {
     const fetchData = async () => {
       setError(null);
       if (selectedCity) {
-        try {
-          // Fetch weather data
-          setLoading(true);
-          const weatherResponse = await axios.get(
-            `/weather/${selectedCity.id}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          setWeatherData(weatherResponse.data);
-
-          if (showForecast) {
-            // Fetch detailed forecast data
-            setLoading(true);
-            const forecastResponse = await axios.get(
-              `/forecast/${selectedCity.id}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
-            setForecastData(forecastResponse.data);
-          }
-        } catch (error) {
-          console.error(error);
-          setError("Error fetching data");
-        } finally {
-          setLoading(false);
-        }
+        weatherDataResponse(selectedCity);
       }
     };
 
